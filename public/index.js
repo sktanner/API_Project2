@@ -10,6 +10,9 @@
 let random = Math.floor((Math.random() * 10) + 1)
 
 let button = document.getElementById('submitButton').addEventListener('click', fetchFunction)
+let gifList = document.getElementById('list')
+let form = document.getElementById('form')
+
 
 function fetchFunction(event) {
     event.preventDefault()
@@ -23,17 +26,22 @@ function fetchFunction(event) {
         .then(res => res.json())
         .then(json => {
             console.log(json)
-            displayResults(json.data[random].images.original.url)
+            displayResults(json.data[random].images.original.url, json.data[random].title)
         })
 }
 
-function displayResults(json) {
-    let gifList = document.getElementById('list')
-    let form = document.getElementById('form')
+function displayResults(image, title) {
+    while (gifList.firstChild) {
+        gifList.removeChild(gifList.firstChild)
+    }
+    
     let gif = document.createElement('li')
     let gifImg = document.createElement('img')
-    gifImg.src = json
+    let titleEl = document.createElement('h5')
+    gifImg.src = image
+    titleEl.innerText = `Title: "` + title + `"`
     gifList.appendChild(gifImg)
+    gifList.appendChild(titleEl)
     form.reset()
-    gifList.removeChild(list.childNodes[0])
+    //titleEl.removeChild(titleEl.firstChild)
 }
